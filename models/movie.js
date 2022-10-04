@@ -29,10 +29,18 @@ const movieSchema = new mongoose.Schema({
     },
   },
   trailerLink: {
+    type: String,
+    require: true,
+    validate: {
 
+    },
   },
   thumbnail: {
+    type: String,
+    require: true,
+    validate: {
 
+    },
   },
   owner: {
 
@@ -41,11 +49,13 @@ const movieSchema = new mongoose.Schema({
 
   },
   nameRU: {
-
+    type: String,
+    required: true,
   },
   nameEN: {
-
+    type: String,
+    required: true,
   },
 });
 
-module.exports = mongoose.model('movie', movieSchema);
+//module.exports = mongoose.model('movie', movieSchema);
