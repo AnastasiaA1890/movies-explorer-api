@@ -1,20 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-const { regex } = require('../const/constants');
-
-const validateRegister = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-});
-
-const validateLogin = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-});
+const validator = require('validator');
 
 const validateProfileUpdate = celebrate({
   body: Joi.object().keys({
@@ -36,9 +21,24 @@ const validateCreateMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(regex),
-    trailerLink: Joi.string().required().pattern(regex),
-    thumbnail: Joi.string().required().pattern(regex),
+    image: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Неправильная ссылка');
+    }),
+    trailerLink: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Неправильная ссылка');
+    }),
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Неправильная ссылка');
+    }),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
@@ -52,8 +52,6 @@ const validateMovieId = celebrate({
 });
 
 module.exports = {
-  validateRegister,
-  validateLogin,
   validateUserId,
   validateProfileUpdate,
   validateCreateMovie,
